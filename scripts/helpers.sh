@@ -77,7 +77,7 @@ send_notification() {
 			if $finished; then
 				if [[ "$sound" == "on" ]]; then
 					if command -v paplay &> /dev/null; then
-						echo "-e '\a'"
+						paplay "/usr/share/sounds/freedesktop/stereo/complete.oga"
 					else
 						echo "paplay not found."
 					fi
