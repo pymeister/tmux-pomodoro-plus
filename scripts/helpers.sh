@@ -69,16 +69,20 @@ send_notification() {
 		local title=$1
 		local message=$2
 		local finished=${3:-false}
-		sound=$(get_sound)
-		export sound
+		local sound=$(get_sound)
+
 		case "$OSTYPE" in
 		linux* | *bsd*)
 			notify-send -t 8000 "$title" "$message"
 			if $finished; then
 				if [[ "$sound" == "on" ]]; then
-					beep -D 1500
+					if command -v paplay &> /dev/null; then
+						paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+					else
+						echo "paplay not found."
+					fi
 				elif [[ "$sound" != "off" ]]; then
-					$sound
+					eval "$sound"
 				fi
 			fi
 			;;
